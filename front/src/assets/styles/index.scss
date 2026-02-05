@@ -1,0 +1,176 @@
+@import './variables.scss';
+@import './mixins.scss';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
+  font-size: $font-size-sm;
+  line-height: $line-height-sm;
+  color: $text-primary;
+  background: linear-gradient(to bottom, #f0f9f5 0%, #e8f5ed 100%);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+}
+
+// 滚动条样式
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: $bg-secondary;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(155, 225, 93, 0.5);
+  border-radius: 4px;
+
+  &:hover {
+    background: rgba(155, 225, 93, 0.7);
+  }
+}
+
+// 链接样式
+a {
+  color: $primary-start;
+  text-decoration: none;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $primary-end;
+  }
+}
+
+// Element Plus 主题色覆盖
+:deep(.el-button--primary) {
+  @include gradient-bg;
+  border: none;
+
+  &:hover,
+  &:focus {
+    background: linear-gradient(to top, #8dd04f 0%, #00d19f 100%);
+  }
+}
+
+:deep(.el-tabs__active-bar) {
+  @include gradient-bg;
+}
+
+:deep(.el-tabs__item.is-active) {
+  color: $primary-start;
+}
+
+:deep(.el-tabs__item:hover) {
+  color: $primary-start;
+}
+
+:deep(.el-pagination button:hover) {
+  color: $primary-start;
+}
+
+:deep(.el-pagination .number.active) {
+  background-color: $primary-start;
+  border-color: $primary-start;
+  color: $text-white;
+}
+
+:deep(.el-pagination .number:hover) {
+  color: $primary-start;
+}
+
+:deep(.el-input__wrapper.is-focus) {
+  box-shadow: 0 0 0 1px $primary-start inset;
+}
+
+:deep(.el-slider__button) {
+  border-color: $primary-start;
+}
+
+:deep(.el-slider__bar) {
+  background-color: $primary-start;
+}
+
+:deep(.el-slider__button:hover) {
+  border-color: $primary-end;
+}
+
+:deep(.el-table) {
+  background: rgba(255, 255, 255, 0.7);
+
+  .el-table__header {
+    background: rgba(155, 225, 93, 0.08);
+  }
+
+  .el-table__row {
+    background: rgba(255, 255, 255, 0.5);
+
+    &:hover {
+      background: rgba(155, 225, 93, 0.12) !important;
+    }
+
+    &.el-table__row--striped {
+      background: rgba(240, 249, 245, 0.5);
+    }
+  }
+}
+
+:deep(.el-card) {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(155, 225, 93, 0.2);
+}
+
+:deep(.el-drawer) {
+  background: rgba(240, 249, 245, 0.98);
+}
+
+:deep(.el-drawer__header) {
+  border-bottom: 1px solid rgba(155, 225, 93, 0.2);
+}
+
+// 按钮基础样式
+.btn {
+  padding: $spacing-sm $spacing-lg;
+  border: none;
+  border-radius: $radius-sm;
+  cursor: pointer;
+  transition: all $transition-fast;
+  font-size: $font-size-sm;
+
+  &.btn-primary {
+    @include gradient-bg;
+    color: $text-white;
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  &.btn-secondary {
+    background: $bg-primary;
+    color: $primary-start;
+    border: 1px solid $primary-start;
+
+    &:hover {
+      background: rgba(155, 225, 93, 0.1);
+      border-color: $primary-end;
+      color: $primary-end;
+    }
+  }
+}
+

@@ -1,0 +1,179 @@
+@import './variables.scss';
+@import './mixins.scss';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  font-size: $font-size-base;
+  color: $text-primary;
+  background-color: $bg-color-page;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+}
+
+// 通用样式
+.page-container {
+  padding: $spacing-lg;
+  height: 100%;
+  overflow-y: auto;
+  @include scrollbar();
+}
+
+.page-header {
+  margin-bottom: $spacing-lg;
+  
+  .page-title {
+    font-size: $font-size-xl;
+    font-weight: 600;
+    color: $text-primary;
+    margin-bottom: $spacing-sm;
+  }
+  
+  .page-description {
+    font-size: $font-size-sm;
+    color: $text-secondary;
+  }
+}
+
+// 卡片样式
+.card {
+  @include card();
+  margin-bottom: $spacing-lg;
+  
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: $spacing-md;
+    padding-bottom: $spacing-md;
+    border-bottom: 1px solid $border-color-lighter;
+    
+    .card-title {
+      font-size: $font-size-lg;
+      font-weight: 600;
+      color: $text-primary;
+    }
+  }
+  
+  .card-body {
+    // 卡片内容样式
+  }
+}
+
+// 表格样式
+.table-container {
+  .table-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: $spacing-md;
+  }
+  
+  .table-search {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+  }
+}
+
+// 表单样式
+.form-container {
+  max-width: 800px;
+  margin: 0 auto;
+  
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: $spacing-sm;
+    margin-top: $spacing-lg;
+    padding-top: $spacing-lg;
+    border-top: 1px solid $border-color-lighter;
+  }
+}
+
+// 统计卡片
+.stat-card {
+  @include card();
+  text-align: center;
+  
+  .stat-value {
+    font-size: $font-size-xxl;
+    font-weight: 600;
+    color: $primary-color;
+    margin-bottom: $spacing-xs;
+  }
+  
+  .stat-label {
+    font-size: $font-size-sm;
+    color: $text-secondary;
+  }
+  
+  .stat-change {
+    font-size: $font-size-xs;
+    margin-top: $spacing-xs;
+    
+    &.positive {
+      color: $success-color;
+    }
+    
+    &.negative {
+      color: $danger-color;
+    }
+  }
+}
+
+// 图表容器
+.chart-container {
+  width: 100%;
+  height: 400px;
+  margin-bottom: $spacing-lg;
+}
+
+// 空状态
+.empty-state {
+  @include center();
+  flex-direction: column;
+  padding: $spacing-xl;
+  color: $text-secondary;
+  
+  .empty-icon {
+    font-size: 48px;
+    margin-bottom: $spacing-md;
+    opacity: 0.5;
+  }
+  
+  .empty-text {
+    font-size: $font-size-base;
+  }
+}
+
+// 加载状态
+.loading-container {
+  @include center();
+  min-height: 200px;
+}
+
+// 响应式
+@include respond-to('xs') {
+  .page-container {
+    padding: $spacing-md;
+  }
+  
+  .form-container {
+    max-width: 100%;
+  }
+}
+

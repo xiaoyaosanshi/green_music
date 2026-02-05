@@ -1,0 +1,10 @@
+export * from './admin'
+export * from './song'
+export * from './album'
+export * from './lyric'
+export * from './user'
+export * from './comment'
+export * from './playlist'
+export * from './statistics'
+export * from './log'
+

@@ -1,0 +1,5 @@
+"id","username","password_hash","email","nickname","avatar","gender","birthday","status","last_login_at","created_at","updated_at"
+"1","testuser1","$2b$10$qi34h8FeovDRSz3.vNKlU.wjFMYCz3ITfSrpDPrDzFLhAjML95C6W","test1@example.com","测试用户1",,"1",,"1","4/2/2026 16:05:05","4/2/2026 10:41:42","4/2/2026 16:05:05"
+"2","testuser2","$2b$10$qi34h8FeovDRSz3.vNKlU.wjFMYCz3ITfSrpDPrDzFLhAjML95C6W","test2@example.com","测试用户2",,"2",,"1",,"4/2/2026 10:41:42","4/2/2026 10:41:42"
+"3","testuser3","$2b$10$qi34h8FeovDRSz3.vNKlU.wjFMYCz3ITfSrpDPrDzFLhAjML95C6W","test3@example.com","测试用户3",,"0",,"1",,"4/2/2026 10:41:42","4/2/2026 10:41:42"
+"4","demo","$2b$10$ONQQWm0t9SjMe4xIbz9Lce1/Th4D7GMV7OeXcZXx4nxi6M5movaQi","demo@example.com","演示用户",,"1",,"1",,"4/2/2026 10:41:42","4/2/2026 10:41:42"

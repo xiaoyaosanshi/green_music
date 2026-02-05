@@ -1,0 +1,63 @@
+// 主题色彩变量
+$primary-gradient: linear-gradient(to top, #9be15d 0%, #00e3ae 100%);
+$primary-start: #9be15d;
+$primary-end: #00e3ae;
+
+// 背景色
+$bg-primary: #ffffff;
+$bg-secondary: #f0f9f5; // 淡绿色背景
+$bg-tertiary: #e8f5ed; // 更淡的绿色背景
+$bg-dark: #1a1a1a;
+
+// 文字颜色
+$text-primary: #333333;
+$text-secondary: #666666;
+$text-disabled: #999999;
+$text-white: #ffffff;
+
+// 边框和阴影
+$border-color: #e0e0e0;
+$shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+$shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+$shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+
+// 间距
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 12px;
+$spacing-lg: 16px;
+$spacing-xl: 24px;
+$spacing-xxl: 32px;
+
+// 圆角
+$radius-sm: 4px;
+$radius-md: 8px;
+$radius-lg: 12px;
+
+// 动画
+$transition-fast: 0.2s ease;
+$transition-base: 0.3s ease;
+$transition-slow: 0.5s ease;
+
+// 断点
+$breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+);
+
+// 字体
+$font-size-xs: 12px;
+$font-size-sm: 14px;
+$font-size-md: 16px;
+$font-size-lg: 18px;
+$font-size-xl: 24px;
+
+$line-height-xs: 16px;
+$line-height-sm: 20px;
+$line-height-md: 24px;
+$line-height-lg: 32px;
+
