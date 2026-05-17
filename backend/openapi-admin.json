@@ -1,0 +1,1167 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Green Music Admin API",
+    "description": "Green Music Platform Admin API Documentation",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Green Music Team",
+      "email": "admin@greenmusic.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001/api",
+      "description": "Development Server"
+    }
+  ],
+  "tags": [
+    { "name": "Auth", "description": "Admin authentication" },
+    { "name": "Song", "description": "Song management" },
+    { "name": "Album", "description": "Album management" },
+    { "name": "Lyric", "description": "Lyric management" },
+    { "name": "User", "description": "User management" },
+    { "name": "Comment", "description": "Comment management" },
+    { "name": "Playlist", "description": "Playlist management" },
+    { "name": "Statistics", "description": "Statistics and analytics" },
+    { "name": "Log", "description": "Operation logs" },
+    { "name": "Upload", "description": "File upload" }
+  ],
+  "paths": {
+    "/admin/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Admin login",
+        "description": "Authenticate admin user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminLoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminAuthResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/admin/auth/info": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Get admin info",
+        "description": "Get current admin information",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/songs": {
+      "get": {
+        "tags": ["Song"],
+        "summary": "Get songs list",
+        "description": "Get paginated songs for admin",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/PageParam" },
+          { "$ref": "#/components/parameters/LimitParam" },
+          { "$ref": "#/components/parameters/KeywordParam" },
+          { "$ref": "#/components/parameters/StatusParam" },
+          { "$ref": "#/components/parameters/GenreParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminSongListResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Song"],
+        "summary": "Create song",
+        "description": "Create a new song with file upload",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSongRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Song created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SongDetailResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/songs/{id}": {
+      "get": {
+        "tags": ["Song"],
+        "summary": "Get song detail",
+        "description": "Get song detail for admin",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminSongDetailResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Song"],
+        "summary": "Update song",
+        "description": "Update song with file upload",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSongRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Song updated"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Song"],
+        "summary": "Delete song",
+        "description": "Delete a song",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Song deleted"
+          }
+        }
+      }
+    },
+    "/admin/songs/{id}/status": {
+      "put": {
+        "tags": ["Song"],
+        "summary": "Update song status",
+        "description": "Change song publication status",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateStatusRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Status updated"
+          }
+        }
+      }
+    },
+    "/admin/songs/batch": {
+      "post": {
+        "tags": ["Song"],
+        "summary": "Batch operation",
+        "description": "Batch operate on songs",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BatchOperationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Operation completed"
+          }
+        }
+      }
+    },
+    "/admin/albums": {
+      "get": {
+        "tags": ["Album"],
+        "summary": "Get albums list",
+        "description": "Get paginated albums",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/PageParam" },
+          { "$ref": "#/components/parameters/LimitParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlbumListResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Album"],
+        "summary": "Create album",
+        "description": "Create a new album",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAlbumRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Album created"
+          }
+        }
+      }
+    },
+    "/admin/albums/{id}": {
+      "get": {
+        "tags": ["Album"],
+        "summary": "Get album detail",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Album"],
+        "summary": "Update album",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAlbumRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Album updated"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Album"],
+        "summary": "Delete album",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Album deleted"
+          }
+        }
+      }
+    },
+    "/admin/lyrics": {
+      "get": {
+        "tags": ["Lyric"],
+        "summary": "Get lyrics list",
+        "description": "Get lyrics for review",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/PageParam" },
+          { "$ref": "#/components/parameters/LimitParam" },
+          { "name": "status", "in": "query", "schema": { "type": "string", "enum": ["pending", "approved", "rejected"] } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Lyric"],
+        "summary": "Create lyric",
+        "description": "Add lyrics for a song",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["songId", "content"],
+                "properties": {
+                  "songId": { "type": "integer" },
+                  "content": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Lyric created"
+          }
+        }
+      }
+    },
+    "/admin/lyrics/{id}/review": {
+      "put": {
+        "tags": ["Lyric"],
+        "summary": "Review lyric",
+        "description": "Review user submitted lyrics",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["status"],
+                "properties": {
+                  "status": { "type": "string", "enum": ["approved", "rejected"] },
+                  "reason": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Review completed"
+          }
+        }
+      }
+    },
+    "/admin/lyrics/{id}": {
+      "delete": {
+        "tags": ["Lyric"],
+        "summary": "Delete lyric",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lyric deleted"
+          }
+        }
+      }
+    },
+    "/admin/users": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get users list",
+        "description": "Get paginated users",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/PageParam" },
+          { "$ref": "#/components/parameters/LimitParam" },
+          { "$ref": "#/components/parameters/KeywordParam" },
+          { "name": "status", "in": "query", "schema": { "type": "string", "enum": ["active", "banned", "deleted"] } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserListResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/users/{id}": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user detail",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["User"],
+        "summary": "Delete user",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "User deleted"
+          }
+        }
+      }
+    },
+    "/admin/users/{id}/status": {
+      "put": {
+        "tags": ["User"],
+        "summary": "Update user status",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["status"],
+                "properties": {
+                  "status": { "type": "string", "enum": ["active", "banned"] }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Status updated"
+          }
+        }
+      }
+    },
+    "/admin/users/{id}/reset-password": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Reset user password",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "newPassword": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password reset"
+          }
+        }
+      }
+    },
+    "/admin/comments": {
+      "get": {
+        "tags": ["Comment"],
+        "summary": "Get comments list",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/PageParam" },
+          { "$ref": "#/components/parameters/LimitParam" },
+          { "name": "status", "in": "query", "schema": { "type": "string", "enum": ["pending", "approved", "rejected"] } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/admin/comments/{id}": {
+      "get": {
+        "tags": ["Comment"],
+        "summary": "Get comment detail",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Comment"],
+        "summary": "Delete comment",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Comment deleted"
+          }
+        }
+      }
+    },
+    "/admin/comments/{id}/review": {
+      "put": {
+        "tags": ["Comment"],
+        "summary": "Review comment",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["status"],
+                "properties": {
+                  "status": { "type": "string", "enum": ["approved", "rejected"] }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Review completed"
+          }
+        }
+      }
+    },
+    "/admin/playlists": {
+      "get": {
+        "tags": ["Playlist"],
+        "summary": "Get playlists list",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/PageParam" },
+          { "$ref": "#/components/parameters/LimitParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/admin/playlists/{id}": {
+      "get": {
+        "tags": ["Playlist"],
+        "summary": "Get playlist detail",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Playlist"],
+        "summary": "Update playlist",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "description": { "type": "string" },
+                  "cover": { "type": "string" },
+                  "isPublic": { "type": "boolean" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Playlist updated"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Playlist"],
+        "summary": "Delete playlist",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Playlist deleted"
+          }
+        }
+      }
+    },
+    "/admin/statistics": {
+      "get": {
+        "tags": ["Statistics"],
+        "summary": "Get overview statistics",
+        "description": "Get platform overview statistics",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OverviewStatsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/statistics/users": {
+      "get": {
+        "tags": ["Statistics"],
+        "summary": "Get user statistics",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "name": "period", "in": "query", "schema": { "type": "string", "enum": ["day", "week", "month"], "default": "week" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/admin/statistics/songs": {
+      "get": {
+        "tags": ["Statistics"],
+        "summary": "Get song statistics",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "name": "period", "in": "query", "schema": { "type": "string", "enum": ["day", "week", "month"], "default": "week" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/admin/statistics/playback": {
+      "get": {
+        "tags": ["Statistics"],
+        "summary": "Get playback statistics",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "name": "period", "in": "query", "schema": { "type": "string", "enum": ["day", "week", "month"], "default": "week" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/admin/statistics/recommend": {
+      "get": {
+        "tags": ["Statistics"],
+        "summary": "Get recommendation statistics",
+        "security": [{ "BearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/admin/logs": {
+      "get": {
+        "tags": ["Log"],
+        "summary": "Get operation logs",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/PageParam" },
+          { "$ref": "#/components/parameters/LimitParam" },
+          { "name": "adminId", "in": "query", "schema": { "type": "integer" } },
+          { "name": "action", "in": "query", "schema": { "type": "string" } },
+          { "name": "startTime", "in": "query", "schema": { "type": "string", "format": "date-time" } },
+          { "name": "endTime", "in": "query", "schema": { "type": "string", "format": "date-time" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/admin/logs/{id}": {
+      "get": {
+        "tags": ["Log"],
+        "summary": "Get log detail",
+        "security": [{ "BearerAuth": [] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/IdParam" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/admin/upload": {
+      "post": {
+        "tags": ["Upload"],
+        "summary": "Upload file",
+        "description": "Upload image or audio file",
+        "security": [{ "BearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["file"],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "File to upload"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Upload success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "JWT authentication token for admin"
+      }
+    },
+    "parameters": {
+      "IdParam": {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": { "type": "integer" },
+        "description": "Resource ID"
+      },
+      "PageParam": {
+        "name": "page",
+        "in": "query",
+        "schema": { "type": "integer", "default": 1 },
+        "description": "Page number"
+      },
+      "LimitParam": {
+        "name": "limit",
+        "in": "query",
+        "schema": { "type": "integer", "default": 20 },
+        "description": "Items per page"
+      },
+      "KeywordParam": {
+        "name": "keyword",
+        "in": "query",
+        "schema": { "type": "string" },
+        "description": "Search keyword"
+      },
+      "StatusParam": {
+        "name": "status",
+        "in": "query",
+        "schema": { "type": "string", "enum": ["draft", "published", "archived"] },
+        "description": "Content status"
+      },
+      "GenreParam": {
+        "name": "genre",
+        "in": "query",
+        "schema": { "type": "string" },
+        "description": "Music genre"
+      }
+    },
+    "schemas": {
+      "AdminLoginRequest": {
+        "type": "object",
+        "required": ["username", "password"],
+        "properties": {
+          "username": { "type": "string" },
+          "password": { "type": "string", "format": "password" }
+        }
+      },
+      "AdminAuthResponse": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "integer", "example": 0 },
+          "message": { "type": "string", "example": "Login successful" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "admin": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "integer" },
+                  "username": { "type": "string" },
+                  "role": { "type": "string" }
+                }
+              },
+              "token": { "type": "string" }
+            }
+          }
+        }
+      },
+      "AdminResponse": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "integer", "example": 0 },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "integer" },
+              "username": { "type": "string" },
+              "role": { "type": "string" },
+              "email": { "type": "string" }
+            }
+          }
+        }
+      },
+      "CreateSongRequest": {
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "title": { "type": "string" },
+          "artist": { "type": "string" },
+          "album": { "type": "string" },
+          "genre": { "type": "string" },
+          "mood": { "type": "string" },
+          "duration": { "type": "integer" },
+          "cover": { "type": "string", "format": "binary" },
+          "file": { "type": "string", "format": "binary" }
+        }
+      },
+      "UpdateSongRequest": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string" },
+          "artist": { "type": "string" },
+          "album": { "type": "string" },
+          "genre": { "type": "string" },
+          "mood": { "type": "string" },
+          "cover": { "type": "string", "format": "binary" },
+          "file": { "type": "string", "format": "binary" }
+        }
+      },
+      "SongDetailResponse": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "integer", "example": 0 },
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "integer" },
+              "title": { "type": "string" },
+              "artist": { "type": "string" },
+              "album": { "type": "string" },
+              "genre": { "type": "string" },
+              "mood": { "type": "string" },
+              "duration": { "type": "integer" },
+              "cover": { "type": "string" },
+              "fileUrl": { "type": "string" },
+              "status": { "type": "string", "enum": ["draft", "published", "archived"] },
+              "playCount": { "type": "integer" },
+              "createdAt": { "type": "string", "format": "date-time" }
+            }
+          }
+        }
+      },
+      "AdminSongListResponse": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "integer" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "songs": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/SongDetailResponse" }
+              },
+              "total": { "type": "integer" }
+            }
+          }
+        }
+      },
+      "AdminSongDetailResponse": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "integer" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "song": { "$ref": "#/components/schemas/SongDetailResponse" },
+              "lyrics": { "type": "string", "nullable": true },
+              "album": { "type": "object", "nullable": true }
+            }
+          }
+        }
+      },
+      "UpdateStatusRequest": {
+        "type": "object",
+        "required": ["status"],
+        "properties": {
+          "status": { "type": "string", "enum": ["draft", "published", "archived"] }
+        }
+      },
+      "BatchOperationRequest": {
+        "type": "object",
+        "required": ["ids", "action"],
+        "properties": {
+          "ids": { "type": "array", "items": { "type": "integer" } },
+          "action": { "type": "string", "enum": ["publish", "archive", "delete"] }
+        }
+      },
+      "AlbumListResponse": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "integer" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "albums": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "integer" },
+                    "name": { "type": "string" },
+                    "artist": { "type": "string" },
+                    "cover": { "type": "string" },
+                    "songCount": { "type": "integer" }
+                  }
+                }
+              },
+              "total": { "type": "integer" }
+            }
+          }
+        }
+      },
+      "CreateAlbumRequest": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string" },
+          "artist": { "type": "string" },
+          "cover": { "type": "string" },
+          "description": { "type": "string" },
+          "releaseDate": { "type": "string", "format": "date" }
+        }
+      },
+      "UpdateAlbumRequest": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "artist": { "type": "string" },
+          "cover": { "type": "string" },
+          "description": { "type": "string" },
+          "releaseDate": { "type": "string", "format": "date" }
+        }
+      },
+      "UserListResponse": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "integer" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "users": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "integer" },
+                    "username": { "type": "string" },
+                    "email": { "type": "string" },
+                    "avatar": { "type": "string" },
+                    "status": { "type": "string", "enum": ["active", "banned", "deleted"] },
+                    "createdAt": { "type": "string", "format": "date-time" },
+                    "lastLoginAt": { "type": "string", "format": "date-time", "nullable": true }
+                  }
+                }
+              },
+              "total": { "type": "integer" }
+            }
+          }
+        }
+      },
+      "OverviewStatsResponse": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "integer" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "totalUsers": { "type": "integer" },
+              "totalSongs": { "type": "integer" },
+              "totalPlays": { "type": "integer" },
+              "activeUsers": { "type": "integer" },
+              "todayNewUsers": { "type": "integer" },
+              "todayNewSongs": { "type": "integer" }
+            }
+          }
+        }
+      },
+      "UploadResponse": {
+        "type": "object",
+        "properties": {
+          "code": { "type": "integer", "example": 0 },
+          "message": { "type": "string", "example": "Upload successful" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "url": { "type": "string" },
+              "path": { "type": "string" },
+              "size": { "type": "integer" },
+              "type": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "Unauthorized": {
+        "description": "Unauthorized",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": { "type": "integer", "example": 401 },
+                "message": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Resource not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": { "type": "integer", "example": 404 },
+                "message": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

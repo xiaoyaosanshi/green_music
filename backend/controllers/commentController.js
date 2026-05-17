@@ -8,6 +8,12 @@ class CommentController {
   async getCommentList(req, res, next) {
     try {
       const { songId, page = 1, pageSize = 20, sort = 'time' } = req.query;
+
+      // 验证 songId 参数
+      if (!songId || isNaN(parseInt(songId))) {
+        return ResponseHelper.error(res, 1000, 'songId 参数无效');
+      }
+
       const result = await commentService.getCommentList(songId, page, pageSize, sort);
       return ResponseHelper.pagination(res, result.list, result.total, page, pageSize);
     } catch (error) {

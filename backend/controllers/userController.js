@@ -19,6 +19,17 @@ class UserController {
    */
   async updateUser(req, res, next) {
     try {
+      const { nickname, avatar, gender, birthday } = req.body;
+
+      // 检查是否有可更新字段
+      const hasValidField = [nickname, avatar, gender, birthday].some(
+        v => v !== undefined && v !== null && v !== ''
+      );
+
+      if (!hasValidField) {
+        return ResponseHelper.error(res, 1000, '请提供至少一个要更新的字段 (nickname, avatar, gender, birthday)');
+      }
+
       const result = await userService.updateUser(req.user.userId, req.body);
       return ResponseHelper.success(res, result, '更新成功');
     } catch (error) {

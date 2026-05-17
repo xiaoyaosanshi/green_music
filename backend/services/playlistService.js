@@ -75,12 +75,12 @@ class PlaylistService {
     
     // 获取歌曲列表
     const [songs] = await db.query(
-      `SELECT s.*, a.name as artist_name, ps.order_index
+      `SELECT s.*, a.name as artist_name, ps.sort_order
        FROM playlist_songs ps
        INNER JOIN songs s ON ps.song_id = s.id
        INNER JOIN artists a ON s.artist_id = a.id
        WHERE ps.playlist_id = ?
-       ORDER BY ps.order_index ASC, ps.added_at ASC`,
+       ORDER BY ps.sort_order ASC, ps.added_at ASC`,
       [playlistId]
     );
     
@@ -239,15 +239,15 @@ class PlaylistService {
       
       // 获取当前最大排序索引
       const [maxOrder] = await connection.query(
-        `SELECT MAX(order_index) as max_order FROM playlist_songs WHERE playlist_id = ?`,
+        `SELECT MAX(sort_order) as max_order FROM playlist_songs WHERE playlist_id = ?`,
         [playlistId]
       );
-      
+
       const nextOrder = (maxOrder[0].max_order || 0) + 1;
-      
+
       // 添加歌曲
       await connection.query(
-        `INSERT INTO playlist_songs (playlist_id, song_id, order_index) 
+        `INSERT INTO playlist_songs (playlist_id, song_id, sort_order)
          VALUES (?, ?, ?)`,
         [playlistId, songId, nextOrder]
       );
